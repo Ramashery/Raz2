@@ -1,25 +1,35 @@
-// Импортируем функции, которые нам понадобятся из SDK Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+// Импортируем функции из новой, модульной версии SDK
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+import { getFirestore, collection, doc, getDoc, getDocs, updateDoc, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
-
-// <<< ВАЖНО: ЗАМЕНИТЕ ЭТОТ БЛОК ЦЕЛИКОМ НА ВАШИ КЛЮЧИ ИЗ КОНСОЛИ FIREBASE >>>
-// --- НАЧАЛО БЛОКА ДЛЯ ЗАМЕНЫ ---
+// Ваши ключи для подключения к Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSy...СКОПИРУЙТЕ ВАШ КЛЮЧ ИЗ КОНСОЛИ FIREBASE...",
-  authDomain: "razrabotka-b61bc.firebaseapp.com",
-  projectId: "razrabotka-b61bc",
-  storageBucket: "razrabotka-b61bc.appspot.com",
-  messagingSenderId: "394402564794",
-  appId: "1:394402564794:web:f610ffb03e655c600c5083"
+    apiKey: "AIzaSyAT4dDEIDUtzP60ibjahO06P75Q6h95ZN4", // Используйте ваши реальные ключи
+    authDomain: "razrabotka-b61bc.firebaseapp.com",
+    projectId: "razrabotka-b61bc",
+    storageBucket: "razrabotka-b61bc.firebasestorage.app",
+    messagingSenderId: "394402564794",
+    appId: "1:394402564794:web:f610ffb03e655c600c5083"
 };
-// --- КОНЕЦ БЛОКА ДЛЯ ЗАМЕНЫ ---
 
-
-// Инициализируем приложение Firebase с вашими ключами
+// Инициализируем Firebase
 const app = initializeApp(firebaseConfig);
 
-// Создаем и экспортируем сервисы, чтобы их можно было использовать в других файлах вашего сайта
-export const auth = getAuth(app);       // Сервис для аутентификации (входа пользователей)
-export const db = getFirestore(app);    // Сервис для работы с базой данных Firestore
+// Создаем и экспортируем сервисы и функции для использования в других файлах
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+// Экспортируем функции, чтобы не импортировать их в каждом файле заново
+export { 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged, 
+    signOut,
+    collection, 
+    doc, 
+    getDoc, 
+    getDocs, 
+    updateDoc, 
+    deleteDoc,
+    setDoc
+};
