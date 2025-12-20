@@ -11,26 +11,26 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # 1. Устанавливаем Python
+      # 1. Устанавливаем свежий Python 3.11
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
-      # 2. Устанавливаем библиотеки для скрипта
+      # 2. Устанавливаем зависимости
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install firebase-admin jinja2
 
-      # 3. Запускаем генератор сайта (создает папку public)
+      # 3. Запускаем генератор сайта
+      # Важно: Секрет должен содержать ПОЛНЫЙ JSON-код ключа, а не просто ID
       - name: Generate Site
         env:
-          # ВАЖНО: Убедитесь, что этот секрет добавлен в настройках репозитория
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: python generate_site.py
 
-      # 4. Отправляем созданную папку public в Firebase
+      # 4. Отправляем папку public в Firebase
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
