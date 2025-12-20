@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="{{ item.lang or 'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>{{ item.seoTitle }}</title>
+    <meta name="description" content="{{ item.metaDescription }}">
+    
+    {% set canonical_url = "https://digital-craft-tbilisi.site/" + ((item.lang + '/') if item.lang != 'en' else '') + item.collection_name + '/' + item.urlSlug + '/' %}
+    <link rel="canonical" href="{{ canonical_url }}" />
+
+    <meta property="og:title" content="{{ item.ogTitle or item.seoTitle }}">
+    <meta property="og:description" content="{{ item.ogDescription or item.metaDescription }}">
+    <meta property="og:image" content="{{ (item.media or ['/favicon.svg']) | first }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ canonical_url }}">
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/styles.css">
+
+    <!-- Global Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["ProfessionalService", "LocalBusiness"], 
+      "name": "Digital Craft Tbilisi",
+      "description": "{{ item.metaDescription | default('Professional website development and SEO for small and medium businesses in Tbilisi.', true) }}",
+      "url": "https://digital-craft-tbilisi.site/",
+      "logo": "https://digital-craft-tbilisi.site/favicon.svg", 
+      "image": "https://digital-craft-tbilisi.site/favicon.svg",
+      "telephone": "+995 591 102 653",
+      "priceRange": "$$",
+      "address": { "@type": "PostalAddress", "addressLocality": "Tbilisi", "addressCountry": "GE" },
+      "geo": { "@type": "GeoCoordinates", "latitude": "41.7151", "longitude": "44.8271" },
+      "areaServed": { "@type": "City", "name": "Tbilisi" },
+      "openingHoursSpecification": { "@type": "OpeningHoursSpecification", "dayOfWeek": [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" ], "opens": "10:00", "closes": "19:00" },
+      "sameAs": [ "https://wa.me/79119396075", "https://t.me/ramashery" ],
+      "hasOfferCatalog": { "@type": "OfferCatalog", "name": "Web Development and SEO Services", "itemListElement": [ { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom Web Development", "url": "https://digital-craft-tbilisi.site/en/services/custom-web-development-tbilisi/" } }, { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "SEO Optimization", "url": "https://digital-craft-tbilisi.site/en/services/seo-optimization-tbilisi/" } } ] }
+    }
+    </script>
+
+    <!-- Page Schema -->
+    {% if item.schemaJsonLd %}
+    <script type="application/ld+json">
+    {{ item.schemaJsonLd | tojson | safe }}
+    </script>
+    {% endif %}
+</head>
+<body data-static-page="true">
+    
+    <iframe id="custom-background-iframe" title="Custom Background" style="display:none;"></iframe>
+    
+    <button class="menu-toggle" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <div class="nav-overlay">
+        <ul class="nav-menu"></ul>
+    </div>
+
+    <main>
+        <section>
+            <div class="detail-page-header">
+                <!-- Анимация добавлена сразу -->
+                <h1 class="animate-always">{{ item.h1 or item.title }}</h1>
+                {% if item.price %}<div class="detail-price animate-on-scroll">{{ item.price }}</div>{% endif %}
+            </div>
+            <div class="detail-content floating-item">
+                <!-- Здесь вставляется уже готовый HTML из Python -->
+                {{ format_content(item.mainContent) | safe }}
+            </div>
+        </section>
+        
+        {% if related_items %}
+        <section id="related-posts">
+            <h2 class="animate-on-scroll">You Might Also Like</h2>
+            <div class="item-grid">
+            {% for related in related_items %}
+                {% set related_url = '/' + ((related.lang + '/') if related.lang != 'en' else '') + related.collection_name + '/' + related.urlSlug + '/' %}
+                <a href="{{ related_url }}" class="item-card animate-on-scroll">
+                    <div class="item-card__image" style="background-image: url('{{ (related.media or ['']) | first }}')"></div>
+                    <div class="item-card__content">
+                        <h3>{{ related.title }}</h3>
+                        <div class="card-subtitle">{{ related.subtitle }}</div>
+                        <p>{{ related.description }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </main>
+    
+    <footer class="site-footer" id="site-footer"></footer>
+    
+    <script type="module" src="/main.js"></script>
+    
+    <!-- Yandex Metrika -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(103413242, "init", {
+             clickmap:true,
+             trackLinks:true,
+             accurateTrackBounce:true,
+             webvisor:true
+        });
+    </script>
+</body>
+</html>
