@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Web Development & SEO Services in Tbilisi | Digital Craft</title>
+    <meta name="description" content="Professional website development and SEO for businesses in Tbilisi. Get a fast, modern website.">
+    
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+        /* Стили для лоадера */
+        #loader { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #030409; display: flex; justify-content: center; align-items: center; 
+            z-index: 10000; transition: opacity 0.5s ease-out; 
+        }
+        .spinner { 
+            width: 50px; height: 50px; border: 3px solid #b8d8e8; 
+            border-radius: 50%; border-top-color: transparent; 
+            animation: spin 1s linear infinite; 
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        main { opacity: 0; transition: opacity 0.8s ease-in-out; }
+        main.loaded { opacity: 1; }
+    </style>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <div id="loader"><div class="spinner"></div></div>
+    
+    <!-- Фоновый iframe для анимаций из базы -->
+    <iframe id="custom-background-iframe" title="Custom Background" style="display:none;"></iframe>
+    
+    <!-- Навигация -->
+    <button class="menu-toggle" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    
+    <div class="nav-overlay">
+        <ul class="nav-menu">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+
+    <main id="main-content">
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero">
+            <h1 class="animate-always" id="hero-title">Web Development & SEO in Tbilisi</h1>
+            <div class="hero-subtitle-container animate-always">
+                <p id="hero-subtitle">We create high-performance websites for Georgian businesses that attract clients and boost revenue.</p>
+                <ul class="hero-contact-list">
+                    <li><a href="https://wa.me/79119396075" target="_blank">WhatsApp</a></li>
+                    <li><a href="https://t.me/ramashery" target="_blank">Telegram</a></li>
+                    <li><a href="tel:+995591102653">+995 591 102 653</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Placeholder-секции, куда JS вставит карточки -->
+        <section id="services"></section>
+        <section id="portfolio"></section>
+        <section id="blog"></section>
+        <section id="contact"></section>
+    </main>
+
+    <footer class="site-footer" id="site-footer"></footer>
+
+    <script type="module">
+        // --- КОНФИГУРАЦИЯ FIREBASE ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT4dDEIDUtzP60ibjahO06P75Q6h95ZN4",
+            authDomain: "razrabotka-b61bc.firebaseapp.com",
+            projectId: "razrabotka-b61bc",
+            storageBucket: "razrabotka-b61bc.firebasestorage.app",
+            messagingSenderId: "394402564794",
+            appId: "1:394402564794:web:f610ffb03e655c600c5083"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // --- ЛОГИКА ЗАГРУЗКИ ДАННЫХ ---
+        async function initPage() {
+            try {
+                // 1. Загружаем данные из всех коллекций
+                const collections = ['services', 'portfolio', 'blog', 'contact'];
+                const dataPromises = [
+                    db.collection('home').doc('content').get(),
+                    ...collections.map(col => db.collection(col).get())
+                ];
+
+                const [homeDoc, ...snapshots] = await Promise.all(dataPromises);
+                const homeData = homeDoc.data();
+
+                // 2. Обновляем Hero контент
+                if (homeData) {
+                    if (homeData.h1) document.getElementById('hero-title').innerText = homeData.h1;
+                    if (homeData.subtitle) document.getElementById('hero-subtitle').innerText = homeData.subtitle;
+                    if (homeData.backgroundHtml) {
+                        const iframe = document.getElementById('custom-background-iframe');
+                        iframe.style.display = 'block';
+                        iframe.srcdoc = homeData.backgroundHtml;
+                        setTimeout(() => iframe.classList.add('is-visible'), 500);
+                    }
+                }
+
+                // 3. Рендерим каждую секцию с карточками
+                collections.forEach((col, index) => {
+                    const items = snapshots[index].docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderSection(col, items);
+                });
+
+                // 4. Показываем контент
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('main-content').classList.add('loaded');
+                    setupObservers(); // Запуск анимаций появления
+                }, 500);
+
+            } catch (error) {
+                console.error("Error loading data:", error);
+            }
+        }
+
+        function renderSection(id, items) {
+            const container = document.getElementById(id);
+            if (!container || items.length === 0) return;
+
+            const title = id.charAt(0).toUpperCase() + id.slice(1);
+            
+            // Генерируем HTML карточек (только для английского языка 'en' по умолчанию)
+            const cardsHTML = items
+                .filter(item => item.lang === 'en')
+                .map(item => `
+                    <a href="/en/${id}/${item.urlSlug}/" class="item-card animate-on-scroll">
+                        <div class="item-card__image" style="background-image: url('${(item.media && item.media[0]) || ''}')"></div>
+                        <div class="item-card__content">
+                            <h3>${item.title || 'No Title'}</h3>
+                            <div class="card-subtitle">${item.subtitle || ''}</div>
+                            <p>${item.description || ''}</p>
+                        </div>
+                    </a>
+                `).join('');
+
+            container.innerHTML = `
+                <div class="animated-container"><h2>Our ${title}</h2></div>
+                <div class="item-grid">${cardsHTML}</div>
+            `;
+        }
+
+        // --- АНИМАЦИИ ПРИ СКРОЛЛЕ (OBSERVERS) ---
+        function setupObservers() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // Анимируем заголовки, карточки и hero
+            document.querySelectorAll('.animate-on-scroll, .animate-always, .animated-container').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // --- ОБРАБОТКА МЕНЮ ---
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('nav-is-open');
+            document.querySelector('.menu-toggle').classList.toggle('is-active');
+            document.querySelector('.nav-overlay').classList.toggle('is-active');
+        });
+
+        // Закрытие меню при клике на ссылку
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.body.classList.remove('nav-is-open');
+                document.querySelector('.menu-toggle').classList.remove('is-active');
+                document.querySelector('.nav-overlay').classList.remove('is-active');
+            });
+        });
+
+        // Запуск
+        window.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
