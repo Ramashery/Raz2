@@ -1,11 +1,12 @@
 {
   "hosting": {
     "site": "raz2raz2",
-    "public": "public",
+    "public": ".",
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      ".github/**"
     ],
     "headers": [
       {
@@ -28,42 +29,15 @@
       }
     ],
     "rewrites": [
-      {
-        "source": "/services/**",
-        "destination": "/page.html"
-      },
-      {
-        "source": "/*/services/**",
-        "destination": "/page.html"
-      },
-      {
-        "source": "/portfolio/**",
-        "destination": "/page.html"
-      },
-      {
-        "source": "/*/portfolio/**",
-        "destination": "/page.html"
-      },
-      {
-        "source": "/blog/**",
-        "destination": "/page.html"
-      },
-      {
-        "source": "/*/blog/**",
-        "destination": "/page.html"
-      },
-      {
-        "source": "/contact/**",
-        "destination": "/page.html"
-      },
-      {
-        "source": "/*/contact/**",
-        "destination": "/page.html"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
+      { "source": "/services/**", "destination": "/page.html" },
+      { "source": "/*/services/**", "destination": "/page.html" },
+      { "source": "/portfolio/**", "destination": "/page.html" },
+      { "source": "/*/portfolio/**", "destination": "/page.html" },
+      { "source": "/blog/**", "destination": "/page.html" },
+      { "source": "/*/blog/**", "destination": "/page.html" },
+      { "source": "/contact/**", "destination": "/page.html" },
+      { "source": "/*/contact/**", "destination": "/page.html" },
+      { "source": "**", "destination": "/index.html" }
     ]
   }
 }
