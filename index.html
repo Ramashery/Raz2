@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development & SEO in Tbilisi | Digital Craft</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #030409; display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .spinner { width: 50px; height: 50px; border: 3px solid #b8d8e8; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js" defer></script>
+</head>
+<body data-static-page="false">
+    <div id="loader"><div class="spinner"></div></div>
+    <iframe id="custom-background-iframe" title="Custom Background" style="display:none;"></iframe>
+    
+    <button class="menu-toggle" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <div class="nav-overlay"><ul class="nav-menu"></ul></div>
+
+    <main class="loading">
+        <!-- Контент сгенерирует функция renderHomePage() -->
+    </main>
+
+    <footer class="site-footer" id="site-footer"></footer>
+    <script type="module" src="/main.js"></script>
+</body>
+</html>
