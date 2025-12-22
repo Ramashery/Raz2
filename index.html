@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Development & SEO Services in Tbilisi | Digital Craft</title>
+    <meta name="description" content="Professional website development and SEO in Tbilisi. Get a fast, modern website.">
+    
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #030409; display: flex; justify-content: center; align-items: center; z-index: 10000; transition: opacity 0.5s ease-out; }
+        .spinner { width: 50px; height: 50px; border: 3px solid #b8d8e8; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .hero { min-height: 100vh; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js" defer></script>
+</head>
+<body data-static-page="false">
+    
+    <div id="loader"><div class="spinner"></div></div>
+    <iframe id="custom-background-iframe" title="Custom Background" style="display:none;"></iframe>
+    
+    <button class="menu-toggle" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    
+    <div class="nav-overlay">
+        <ul class="nav-menu"></ul>
+    </div>
+
+    <main class="loading">
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <h1 class="animate-always">Web Development & SEO in Tbilisi</h1>
+            <div class="hero-subtitle-container animate-always">
+                <p>We create high-performance websites for Georgian businesses that attract clients and boost revenue.</p>
+                <ul class="hero-contact-list">
+                    <li><a href="https://wa.me/79119396075" target="_blank">WhatsApp</a></li>
+                    <li><a href="https://t.me/ramashery" target="_blank">Telegram</a></li>
+                    <li><a href="tel:+995591102653">+995 591 102 653</a></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Контейнеры для динамического контента -->
+        <section id="services"></section>
+        <section id="portfolio"></section>
+        <section id="blog"></section>
+        <section id="contact"></section>
+    </main>
+    
+    <footer class="site-footer" id="site-footer"></footer>
+    
+    <script type="module" src="/main.js"></script>
+</body>
+</html>
