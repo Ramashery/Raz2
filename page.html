@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Details | Digital Craft</title>
+    
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #030409; display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        /* Скрываем футер главной на внутренних страницах, как в вашем коде */
+        .site-footer { display: none; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js" defer></script>
+</head>
+<body data-static-page="false">
+    
+    <div id="loader"><div class="spinner"></div></div>
+    <iframe id="custom-background-iframe" title="Custom Background" style="display:none;"></iframe>
+    
+    <button class="menu-toggle" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    
+    <div class="nav-overlay">
+        <ul class="nav-menu"></ul>
+    </div>
+
+    <main class="loading">
+        <!-- Сюда JS подставит заголовок, цену и текст из Firebase -->
+        <article id="detail-view">
+            <section>
+                <div class="detail-page-header">
+                    <h1 class="animate-always">Loading...</h1>
+                    <div class="detail-price"></div>
+                </div>
+                <div class="detail-content floating-item">
+                    <!-- Сюда загрузится основной текст -->
+                </div>
+            </section>
+
+            <!-- Сюда загрузятся похожие записи -->
+            <section id="related-posts"></section>
+        </article>
+    </main>
+    
+    <script type="module" src="/main.js"></script>
+</body>
+</html>
