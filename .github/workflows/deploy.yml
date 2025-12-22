@@ -10,21 +10,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Шаги сборки Python закомментированы, так как мы используем прямую загрузку HTML
-      # - name: Set up Python
-      #   uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.11'
+      # ================== ИЗМЕНЕНИЯ ЗДЕСЬ ==================
+      # Шаги сборки Python теперь активированы для SSG
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
       
-      # - name: Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install firebase-admin jinja2
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install firebase-admin jinja2
       
-      # - name: Generate Site
-      #   env:
-      #     FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-      #   run: python generate_site.py
+      - name: Generate Site
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: python generate_site.py
+      # ======================================================
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
