@@ -1,4 +1,4 @@
- name: Deploy to Experimental Site
+name: Deploy to Experimental Site
 on:
   push:
     branches:
