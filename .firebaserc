@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "razrabotka-b61bc"
+  },
+  "targets": {
+    "razrabotka-b61bc": {
+      "hosting": {
+        "raz2raz2": [
+          "raz2raz2"
+        ]
+      }
+    }
+  }
+}
