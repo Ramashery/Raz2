@@ -33,7 +33,7 @@ jobs:
 
       # (Опционально) Можете оставить этот шаг для проверки, если хотите
       - name: Verify Generated Files
-        run: ls -lR public
+        run: ls -lR build_output
 
       # === ШАГ 3: РАЗВЕРТЫВАНИЕ СВЕЖЕЙ ПАПКИ ===
       - name: Deploy to Firebase Hosting
