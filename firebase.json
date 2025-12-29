@@ -2,7 +2,7 @@
   "hosting": [
     {
       "target": "raz2raz2",
-      "public": "public",
+      "public": "build_output",
       "ignore": [
         "firebase.json",
         "**/.*",
