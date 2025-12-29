@@ -25,6 +25,12 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: python generate_site.py
 
+      # === НОВЫЙ ДИАГНОСТИЧЕСКИЙ ШАГ ===
+      # Эта команда покажет нам, какие файлы на самом деле лежат в папке public
+      # перед тем, как мы попытаемся их развернуть.
+      - name: Verify Generated Files
+        run: ls -lR public
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -32,5 +38,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           channelId: live
           projectId: razrabotka-b61bc
-          # === ВОТ ИСПРАВЛЕНИЕ: Явно указываем цель развертывания ===
           target: raz2raz2
