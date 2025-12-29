@@ -39,3 +39,4 @@ jobs:
           channelId: live
           projectId: razrabotka-b61bc
           target: raz2raz2
+# Forcing a fresh deploy to clear the cache
