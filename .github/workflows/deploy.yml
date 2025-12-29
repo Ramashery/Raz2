@@ -10,6 +10,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # === ШАГ 1: ПРИНУДИТЕЛЬНАЯ ОЧИСТКА ===
+      # Полностью удаляем папку public, чтобы гарантировать чистую сборку.
+      - name: Clean Slate - Remove old public directory
+        run: rm -rf public
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -20,17 +25,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install firebase-admin jinja2
       
+      # === ШАГ 2: ГЕНЕРАЦИЯ НОВОЙ ПАПКИ ===
       - name: Generate Site
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: python generate_site.py
 
-      # === НОВЫЙ ДИАГНОСТИЧЕСКИЙ ШАГ ===
-      # Эта команда покажет нам, какие файлы на самом деле лежат в папке public
-      # перед тем, как мы попытаемся их развернуть.
+      # (Опционально) Можете оставить этот шаг для проверки, если хотите
       - name: Verify Generated Files
         run: ls -lR public
 
+      # === ШАГ 3: РАЗВЕРТЫВАНИЕ СВЕЖЕЙ ПАПКИ ===
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -39,4 +44,3 @@ jobs:
           channelId: live
           projectId: razrabotka-b61bc
           target: raz2raz2
-# Forcing a fresh deploy to clear the cache
