@@ -30,7 +30,7 @@ home_template = env.get_template('home_template.html')
 detail_template = env.get_template('template.html')
 
 # Папки и основные URL
-OUTPUT_DIR = 'public'
+OUTPUT_DIR = 'build_output'
 BASE_URL = "https://digital-craft-tbilisi.site"
 SUPPORTED_LANGS = ['en', 'ka', 'ru', 'ua']
 
